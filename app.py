@@ -127,16 +127,23 @@ def create_app():
 
         return render_template("dashboard/default.html")
 
+    # simple healthcheck route (optional but nice for Railway)
+    @app.route("/health")
+    def health():
+        return "OK", 200
+
     return app
 
 
 # WSGI entrypoint for Gunicorn / Railway
 app = create_app()
 
+
 if __name__ == "__main__":
-    # Local dev: create tables automatically
-    with app.app_context():
-        db.create_all()
+    # Only auto-create tables in local development
+    if os.getenv("FLASK_ENV", "development") == "development":
+        with app.app_context():
+            db.create_all()
 
     port = int(os.environ.get("PORT", 5000))  # Railway sets PORT
     app.run(host="0.0.0.0", port=port, debug=True)
