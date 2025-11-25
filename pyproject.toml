@@ -1,0 +1,18 @@
+[project]
+name = "repl-nix-workspace"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.11"
+dependencies = [
+    "email-validator==2.0.0",
+    "flask==2.3.3",
+    "flask-login==0.6.3",
+    "flask-migrate==4.0.5",
+    "flask-sqlalchemy==3.0.5",
+    "flask-wtf==1.1.1",
+    "pillow==10.0.1",
+    "psycopg2-binary==2.9.9",
+    "python-dotenv==1.0.0",
+    "werkzeug==2.3.7",
+    "wtforms==3.0.1",
+]

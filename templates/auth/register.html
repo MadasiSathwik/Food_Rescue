@@ -1,0 +1,150 @@
+{% extends "base.html" %} {% block title %}Register - Food Wastage Reduction
+App{% endblock %} {% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow mt-5">
+        <div class="card-body">
+          <!-- App Logo -->
+          <div class="text-center mb-3">
+            <img
+              src="{{ url_for('static', filename='images/logo.png') }}"
+              height="90"
+              alt="Food Rescue Logo"
+            />
+          </div>
+
+          <h2 class="card-title text-center mb-4">
+            <i class="bi bi-person-plus text-success"></i>
+            Register
+          </h2>
+
+          <form method="POST">
+            {{ form.hidden_tag() }}
+
+            <!-- Name + Email -->
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                {{ form.name.label(class="form-label") }} {{
+                form.name(class="form-control" + (" is-invalid" if
+                form.name.errors else "")) }} {% if form.name.errors %}
+                <div class="invalid-feedback">
+                  {% for error in form.name.errors %}{{ error }}{% endfor %}
+                </div>
+                {% endif %}
+              </div>
+
+              <div class="col-md-6 mb-3">
+                {{ form.email.label(class="form-label") }} {{
+                form.email(class="form-control" + (" is-invalid" if
+                form.email.errors else "")) }} {% if form.email.errors %}
+                <div class="invalid-feedback">
+                  {% for error in form.email.errors %}{{ error }}{% endfor %}
+                </div>
+                {% endif %}
+              </div>
+            </div>
+
+            <!-- Role -->
+            <div class="mb-3">
+              {{ form.role.label(class="form-label") }} {{
+              form.role(class="form-select" + (" is-invalid" if form.role.errors
+              else "")) }} {% if form.role.errors %}
+              <div class="invalid-feedback">
+                {% for error in form.role.errors %}{{ error }}{% endfor %}
+              </div>
+              {% endif %}
+              <div class="form-text">
+                <strong>Restaurant:</strong> Donate surplus food<br />
+                <strong>NGO:</strong> Claim and collect food donations
+              </div>
+            </div>
+
+            <!-- Organization details -->
+            <div class="mb-3">
+              {{ form.organization_name.label(class="form-label") }} {{
+              form.organization_name(class="form-control" + (" is-invalid" if
+              form.organization_name.errors else "")) }} {% if
+              form.organization_name.errors %}
+              <div class="invalid-feedback">
+                {% for error in form.organization_name.errors %}{{ error }}{%
+                endfor %}
+              </div>
+              {% endif %}
+              <div class="form-text">
+                For restaurants: branch / outlet name. For NGOs: organisation
+                name.
+              </div>
+            </div>
+
+            <!-- Phone + Address -->
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                {{ form.phone.label(class="form-label") }} {{
+                form.phone(class="form-control" + (" is-invalid" if
+                form.phone.errors else "")) }} {% if form.phone.errors %}
+                <div class="invalid-feedback">
+                  {% for error in form.phone.errors %}{{ error }}{% endfor %}
+                </div>
+                {% endif %}
+              </div>
+
+              <div class="col-md-6 mb-3">
+                {{ form.address.label(class="form-label") }} {{
+                form.address(class="form-control" + (" is-invalid" if
+                form.address.errors else "")) }} {% if form.address.errors %}
+                <div class="invalid-feedback">
+                  {% for error in form.address.errors %}{{ error }}{% endfor %}
+                </div>
+                {% endif %}
+              </div>
+            </div>
+
+            <!-- Passwords -->
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                {{ form.password.label(class="form-label") }} {{
+                form.password(class="form-control" + (" is-invalid" if
+                form.password.errors else "")) }} {% if form.password.errors %}
+                <div class="invalid-feedback">
+                  {% for error in form.password.errors %}{{ error }}{% endfor %}
+                </div>
+                {% endif %}
+              </div>
+
+              <div class="col-md-6 mb-3">
+                {{ form.password2.label(class="form-label") }} {{
+                form.password2(class="form-control" + (" is-invalid" if
+                form.password2.errors else "")) }} {% if form.password2.errors
+                %}
+                <div class="invalid-feedback">
+                  {% for error in form.password2.errors %}{{ error }}{% endfor
+                  %}
+                </div>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="d-grid">
+              <button type="submit" class="btn btn-success">
+                <i class="bi bi-person-plus"></i> Register
+              </button>
+            </div>
+          </form>
+
+          <hr />
+          <div class="text-center">
+            <p class="mb-0">Already have an account?</p>
+            <a
+              href="{{ url_for('auth.login') }}"
+              class="btn btn-outline-success btn-sm"
+            >
+              <i class="bi bi-box-arrow-in-right"></i> Login Here
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

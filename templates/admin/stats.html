@@ -1,0 +1,47 @@
+<!-- templates/admin/stats.html -->
+{% extends "base.html" %} {% block content %}
+<h1>Admin Statistics</h1>
+
+<h2>Overview</h2>
+<ul>
+  <li>Total Users: {{ total_users }}</li>
+  <li>Total Restaurants: {{ total_restaurants }}</li>
+  <li>Total NGOs: {{ total_ngos }}</li>
+  <li>Total Donations: {{ total_donations }}</li>
+  <li>Active Donations: {{ active_donations }}</li>
+  <li>Claimed Donations: {{ claimed_donations }}</li>
+  <li>Completed Donations: {{ completed_donations }}</li>
+</ul>
+
+<h2>Top Restaurants (by donations given)</h2>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Donations Given</th>
+  </tr>
+  {% for user, donations_given in top_restaurants %}
+  <tr>
+    <td>{{ user.name }}</td>
+    <td>{{ user.email }}</td>
+    <td>{{ donations_given }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<h2>Top NGOs (by donations taken)</h2>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Donations Taken</th>
+  </tr>
+  {% for user, donations_taken in top_ngos %}
+  <tr>
+    <td>{{ user.name }}</td>
+    <td>{{ user.email }}</td>
+    <td>{{ donations_taken }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

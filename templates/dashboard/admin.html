@@ -1,0 +1,193 @@
+{% extends "base.html" %} {% block title %}Admin Dashboard - Food Wastage
+Reduction App{% endblock %} {% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="mt-4 mb-4">
+        <h2>
+          <i class="bi bi-gear"></i> Admin Dashboard
+          <small class="text-muted">Welcome, {{ current_user.name }}!</small>
+        </h2>
+      </div>
+
+      <!-- Statistics Cards -->
+      <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+          <div class="card bg-primary text-white">
+            <div class="card-body">
+              <div class="d-flex align-items-center">
+                <div class="flex-grow-1">
+                  <h2 class="mb-0">{{ total_users }}</h2>
+                  <p class="mb-0">Total Users</p>
+                </div>
+                <div class="ms-3">
+                  <i class="bi bi-people display-4"></i>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <a
+                href="{{ url_for('admin.users') }}"
+                class="text-white text-decoration-none"
+              >
+                View All Users <i class="bi bi-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 mb-3">
+          <div class="card bg-success text-white">
+            <div class="card-body">
+              <div class="d-flex align-items-center">
+                <div class="flex-grow-1">
+                  <h2 class="mb-0">{{ active_donations }}</h2>
+                  <p class="mb-0">Active Donations</p>
+                </div>
+                <div class="ms-3">
+                  <i class="bi bi-clock display-4"></i>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <a
+                href="{{ url_for('admin.donations', status='active') }}"
+                class="text-white text-decoration-none"
+              >
+                View Active <i class="bi bi-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 mb-3">
+          <div class="card bg-warning text-white">
+            <div class="card-body">
+              <div class="d-flex align-items-center">
+                <div class="flex-grow-1">
+                  <h2 class="mb-0">{{ claimed_donations }}</h2>
+                  <p class="mb-0">Claimed Donations</p>
+                </div>
+                <div class="ms-3">
+                  <i class="bi bi-check-circle display-4"></i>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <a
+                href="{{ url_for('admin.donations', status='claimed') }}"
+                class="text-white text-decoration-none"
+              >
+                View Claimed <i class="bi bi-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 mb-3">
+          <div class="card bg-info text-white">
+            <div class="card-body">
+              <div class="d-flex align-items-center">
+                <div class="flex-grow-1">
+                  <h2 class="mb-0">{{ total_donations }}</h2>
+                  <p class="mb-0">Total Donations</p>
+                </div>
+                <div class="ms-3">
+                  <i class="bi bi-list display-4"></i>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <a
+                href="{{ url_for('admin.donations') }}"
+                class="text-white text-decoration-none"
+              >
+                View All <i class="bi bi-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="row">
+        <div class="col-md-6 mb-4">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="mb-0"><i class="bi bi-people"></i> User Management</h5>
+            </div>
+            <div class="card-body">
+              <p class="card-text">
+                Manage registered users, view their activity, and monitor
+                platform usage.
+              </p>
+              <a href="{{ url_for('admin.users') }}" class="btn btn-primary">
+                <i class="bi bi-people"></i> Manage Users
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="mb-0">
+                <i class="bi bi-list"></i> Donation Management
+              </h5>
+            </div>
+            <div class="card-body">
+              <p class="card-text">
+                Monitor food donations, update statuses, and manage the donation
+                lifecycle.
+              </p>
+              <a
+                href="{{ url_for('admin.donations') }}"
+                class="btn btn-success"
+              >
+                <i class="bi bi-list"></i> Manage Donations
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0"><i class="bi bi-activity"></i> Platform Overview</h5>
+        </div>
+        <div class="card-body">
+          <div class="row text-center">
+            <div class="col-md-3">
+              <div class="border-end">
+                <h4 class="text-success">
+                  {{ (active_donations / total_donations * 100)|round|int }}%
+                </h4>
+                <p class="text-muted">Active Rate</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="border-end">
+                <h4 class="text-warning">
+                  {{ (claimed_donations / total_donations * 100)|round|int }}%
+                </h4>
+                <p class="text-muted">Claim Rate</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="border-end">
+                <h4 class="text-info">{{ total_users }}</h4>
+                <p class="text-muted">Registered Users</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <h4 class="text-primary">{{ total_donations }}</h4>
+              <p class="text-muted">Total Impact</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

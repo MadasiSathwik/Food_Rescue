@@ -1,0 +1,122 @@
+{% extends "base.html" %} {% block title %}{{ donation.title }} - Food Wastage
+Reduction App{% endblock %} {% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow mt-4">
+        {% if donation.image_path %}
+        <img
+          src="{{ url_for('static', filename='uploads/' + donation.image_path) }}"
+          class="card-img-top"
+          style="height: 300px; object-fit: cover"
+          alt="{{ donation.title }}"
+        />
+        {% else %}
+        <img
+          src="https://images.pexels.com/photos/1640774/pexels-photo-1640774.jpeg?auto=compress&cs=tinysrgb&w=600"
+          class="card-img-top"
+          style="height: 300px; object-fit: cover"
+          alt="Food donation"
+        />
+        {% endif %}
+
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <h2 class="card-title">{{ donation.title }}</h2>
+            {% if donation.status == 'claimed' %}
+            <span class="badge bg-warning fs-6">Claimed</span>
+            {% elif not donation.is_available() %}
+            <span class="badge bg-danger fs-6">Expired</span>
+            {% else %}
+            <span class="badge bg-success fs-6">Available</span>
+            {% endif %}
+          </div>
+
+          <p class="card-text">{{ donation.description }}</p>
+
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <h5><i class="bi bi-info-circle text-primary"></i> Details</h5>
+              <ul class="list-unstyled">
+                <li><strong>Food Type:</strong> {{ donation.food_type }}</li>
+                <li><strong>Quantity:</strong> {{ donation.quantity }}</li>
+                <li class="text-muted time-left">
+                  <strong>Time Left:</strong> {{ donation|time_left }}
+                </li>
+              </ul>
+            </div>
+
+            <div class="col-md-6">
+              <h5>
+                <i class="bi bi-geo-alt text-success"></i> Pickup Information
+              </h5>
+              <ul class="list-unstyled">
+                <li>
+                  <strong>Restaurant:</strong> {{ donation.restaurant.name }}
+                </li>
+                <li><strong>Address:</strong> {{ donation.address }}</li>
+                <li>
+                  <strong>Available From:</strong> {{
+                  donation.pickup_time.strftime('%Y-%m-%d %H:%M') }}
+                </li>
+                <li>
+                  <strong>Expires At:</strong> {{
+                  donation.expiry_time.strftime('%Y-%m-%d %H:%M') }}
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {% if donation.status == 'claimed' and donation.claimed_by_ngo %}
+          <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i>
+            This donation has been claimed by
+            <strong>{{ donation.claimed_by_ngo.name }}</strong>
+            on {{ donation.claimed_at.strftime('%Y-%m-%d %H:%M') }}.
+          </div>
+          {% endif %}
+
+          <div class="d-flex gap-2">
+            <a
+              href="{{ url_for('donations.list_donations') }}"
+              class="btn btn-outline-secondary"
+            >
+              <i class="bi bi-arrow-left"></i> Back to List
+            </a>
+
+            {% if current_user.role == 'ngo' and donation.status == 'active' and
+            donation.is_available() %}
+            <form
+              method="POST"
+              action="{{ url_for('donations.claim', id=donation.id) }}"
+              class="d-inline"
+            >
+              <button
+                type="submit"
+                class="btn btn-success"
+                onclick="return confirm('Are you sure you want to claim this donation?')"
+              >
+                <i class="bi bi-check-circle"></i> Claim This Donation
+              </button>
+            </form>
+            {% endif %} {% if current_user.role == 'restaurant' and
+            current_user.id == donation.restaurant_id %}
+            <span class="badge bg-info fs-6 align-self-center"
+              >Your Donation</span
+            >
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="card-footer text-muted">
+          <small>
+            Posted on {{ donation.created_at.strftime('%Y-%m-%d %H:%M') }} {% if
+            donation.status == 'claimed' %} • Claimed on {{
+            donation.claimed_at.strftime('%Y-%m-%d %H:%M') }} {% endif %}
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
